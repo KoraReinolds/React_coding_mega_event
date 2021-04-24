@@ -1,0 +1,57 @@
+@import '../../assets/main.scss';
+
+.select {
+  position: relative;
+}
+
+.label {
+  padding: 10px 16px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  
+  .icon {
+    margin-left: 8px;
+    min-height: 8px;
+    min-width: 8px;
+  }
+  
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 4px;
+  font-family: PT Root UI;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: left;
+  height: 30px;
+  padding: 6px 8px;
+
+  &:not(.text:last-child) {
+    margin-bottom: 4px;
+  }
+
+  &:hover,
+  &.active {
+    background-color: $main-color;
+  }
+}
+
+.list {
+  position: absolute;
+  width: 288px;
+  background-color: $input-background;
+  border-radius: 4px;
+  cursor: pointer;
+  color: $text-color;
+  top: 40px;
+  padding: 16px 10px;
+  z-index: 1;
+
+}

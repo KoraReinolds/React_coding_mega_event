@@ -1,0 +1,40 @@
+@import './assets/main.scss';
+
+@font-face {
+  font-family: 'Halvar Breitschrift';
+  src: url('assets/Halvar Breitschrift/Halvar Breitschrift Medium.ttf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Halvar Breitschrift Light';
+  src: url('assets/Halvar Breitschrift/Halvar Breitschrift Light.ttf') format('opentype');
+}
+
+@font-face {
+  font-family: 'PT Root UI';
+  src: url('assets/PT Root UI/PT Root UI_Medium/PT Root UI_Medium.ttf') format('opentype');
+}
+
+.app {
+  position: relative;
+  text-align: center;
+  background-color: $background-color;
+  height: 100%;
+}
+
+.header {
+  height: 222px;
+  padding-top: 38px;
+  font-family: Halvar Breitschrift;
+  font-size: 53px;
+  line-height: 64px;
+  color: $text-color;
+}
+
+@media (max-width: $mobile_breakpoint) {
+  .header {
+    padding-top: 24px;
+    height: 130px;
+    font-size: 30px;
+  }
+}

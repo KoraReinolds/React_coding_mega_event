@@ -1,0 +1,57 @@
+@import '../../assets/main.scss';
+
+.blocks {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  margin-bottom: 38px;
+}
+
+.block {
+  padding: 0 36px;
+  // width: 288px;
+
+  &:not(.block:last-child) {
+    border-right: 1px solid rgba($text-color, 0.1);
+  }
+  
+}
+
+.block_title {
+  font-family: PT Root UI;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: left;
+  color: $text-color;
+  margin-bottom: 16px;
+}
+
+@media (max-width: $mobile_breakpoint) {
+
+  .blocks {
+    margin-top: 38px;
+    margin-bottom: 32px;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .block {
+    width: calc(288px + 24px);
+    padding: 32px 12px;
+    
+    &:first-child {
+      padding-top: 0;
+    }
+    
+    &:last-child {
+      padding-bottom: 0;
+    }
+
+    &:not(.block:last-child) {
+      border-bottom: 1px solid rgba($text-color, 0.1);
+      border-right: none;
+    }
+
+  }
+
+}

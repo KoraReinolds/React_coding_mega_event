@@ -1,0 +1,136 @@
+@import '../../assets/main.scss';
+
+.input {
+  border: none;
+  height: 40px;
+  background-color: $input-background;
+  color: $text-color;
+  border-radius: 4px;
+  padding: 16px 12px 6px;
+  width: 100%;
+  font-size: 14px;
+
+  &[end_icon] {
+    padding-right: calc(8px + 24px + 6px); // icon padding + icon size + default padding
+  }
+  
+  &:valid,
+  &:focus {
+    outline: none;
+
+    & + .placeholder {
+      top: 4px;
+      font-size: 10px;
+    }
+
+  }
+
+  
+  &[type="select"] {
+    cursor: pointer;
+
+    &[value=""] + .placeholder {
+      top: 11px;
+      font-size: 14px;
+    }
+
+    + .placeholder {
+      top: 4px;
+      font-size: 10px;
+    }
+
+  }
+
+  &:focus:not(input[type="select"]) {
+    border: solid 1px $main-color;
+
+    & ~ .placeholder {
+      color: $main-color;
+    }
+
+  }
+
+  &:valid {
+
+    & ~ .end_icon {
+      cursor: pointer;
+      path { stroke: $text-color }
+      circle { fill: $text-color }
+    }
+
+  }
+
+}
+
+.end_icon {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  path { stroke: $text-secondary }
+  circle { fill: $text-secondary }
+}
+
+.placeholder {
+  cursor: pointer;
+  user-select: none;
+  color: $text-secondary;
+  position: absolute;
+  top: 11px;
+  font-size: 14px;
+  left: 12px;
+  font-family: PT Root UI;
+  line-height: 18px;
+  letter-spacing: 0em;
+  transition: all 0.3s;
+}
+
+.input_box {
+  position: relative;
+  width: 288px;
+  margin-bottom: 16px;
+}
+
+.error {
+  color: $error-color;
+  font-family: PT Root UI;
+  font-size: 12px;
+  line-height: 13px;
+  height: 17px;
+  display: flex;
+  align-items: flex-end;
+  text-align: left;
+}
+
+input[type=date] {
+  
+  &:disabled::-webkit-datetime-edit {
+    color: transparent;
+  }
+
+  &:required:invalid::-webkit-datetime-edit {
+    color: transparent;
+  }
+  
+  &:focus::-webkit-datetime-edit {
+    color: $text-color;
+  }
+
+  &:invalid::-webkit-calendar-picker-indicator {
+    background: url('../../assets/icons/calendar.svg') no-repeat;
+  }
+  
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    display: block;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: url('../../assets/icons/calendarDisabled.svg') no-repeat;
+    width: 24px;
+    height: 24px;
+    border-width: thin;
+  }
+
+}
