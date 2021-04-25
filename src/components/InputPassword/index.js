@@ -5,7 +5,7 @@ import EyeClosedIcon from '../../assets/icons/eyeClosed'
 import { useDispatch } from 'react-redux'
 import {
   changePasswordVisibility,
-} from '../../features/fieldsSlice'
+} from '../../redux/fieldsSlice'
 
 
 const InputPassword = ({ end_icon, show_password, ...props }) => {

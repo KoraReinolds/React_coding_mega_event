@@ -6,15 +6,12 @@ import { useSelector } from 'react-redux'
 import {
   getFormData,
   getFormValid,
-  getFormValues,
   getEntity,
   changeField,
   makeRequest,
   setEvents,
-  getResultData,
-} from '../../features/fieldsSlice'
+} from '../../redux/fieldsSlice'
 import { useDispatch } from 'react-redux'
-import axios from '../../api'
 import { useHistory } from "react-router-dom"
 
 const FillInfo = () => {
@@ -23,16 +20,15 @@ const FillInfo = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const data = useSelector(getFormData)
-  const dataValues = useSelector(getFormValues)
   const dataValid = useSelector(getFormValid)
 
   useEffect(() => {
 
     const f = async () => {
 
-      const { type, payload, error } = await dispatch(makeRequest(
-        () => axios.get('/list')
-      ))
+      const { type, payload, error } = await dispatch(makeRequest({
+        type: 'get', path: '/list'
+      }))
       
       const status = type.split('/')[2]
 
@@ -61,9 +57,9 @@ const FillInfo = () => {
     disabled={ !dataValid }
     onSubmit={ async () => {
 
-      const { type, payload } = await dispatch(makeRequest(
-        () => axios.post('/request', dataValues)
-      ))
+      const { type } = await dispatch(makeRequest({
+        type: 'post', path: '/request', data: 'fill'
+      }))
 
       const status = type.split('/')[2]
 

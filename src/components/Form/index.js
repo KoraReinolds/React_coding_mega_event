@@ -4,7 +4,7 @@ import Submit from '../Submit'
 import { useSelector } from 'react-redux'
 import {
   getStatus,
-} from '../../features/fieldsSlice'
+} from '../../redux/fieldsSlice'
 
 const Form = ({ disabled, onSubmit, children, title, submitValue }) => {
 

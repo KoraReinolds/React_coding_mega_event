@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   getAuthData,
   makeRequest,
-  getAuthValues,
   getAuthValid,
 } from '../../redux/fieldsSlice'
 import { useHistory } from "react-router-dom"
@@ -17,7 +16,6 @@ const Auth = () => {
   const [submitValue, setSubmitValue] = useState('Войти')
   const history = useHistory()
   const data = useSelector(getAuthData)
-  const dataValues = useSelector(getAuthValues)
   const dataValid = useSelector(getAuthValid)
 
   return <Form
@@ -26,9 +24,9 @@ const Auth = () => {
     disabled={ !dataValid }
     onSubmit={ async () => {
 
-      const { type, payload, error } = await dispatch(makeRequest(
-        () => axios.post('/auth', dataValues)
-      ))
+      const { type, payload, error } = await dispatch(makeRequest({
+        type: 'post', path: '/auth', data: 'auth'
+      }))
 
       const status = type.split('/')[2]
       

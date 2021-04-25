@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from '../api'
 
 // правила валидации, список функций принимает строку,
 // возвращает true если строка валидна, иначе сообщение об ошибке
@@ -173,9 +174,31 @@ const initialState = {
 // для управления initialState.status 
 export const makeRequest = createAsyncThunk(
   'fields/request',
-  async (func) => {
-    const { data } = await func()
-    return data
+  async ({ type, path, data }, { getState }) => {
+
+    let requestData = {}
+    const { fields } = getState()
+
+    if (data === 'auth') {
+      requestData = authList.reduce(
+        (sum, cur) => ({ ...sum, [cur]: fields[cur].value }), {}
+      )
+    } else if (data === 'fill') {
+      requestData = {
+        ...[
+          ...(fields.entity.value === 1 ? form_1 : form_2),
+          ...form_3
+        ].reduce(
+          (sum, cur) => ({ ...sum, [cur]: fields[cur].value }), {}
+        ),
+        eventId: fields.eventId.options.find(
+          ({ label }) => label === fields.eventId.value
+        )?.id
+      }
+    }
+
+    const { data: responseData } = await axios[type](path, requestData)
+    return responseData
   }
 )
 
@@ -226,22 +249,6 @@ export const fieldSlice = createSlice({
 })
 
 export const { changeField, changePasswordVisibility, setEvents } = fieldSlice.actions
-
-// формируем список полей для отправки на сервер
-export const getAuthValues = ({ fields }) => authList.reduce(
-  (sum, cur) => ({ ...sum, [cur]: fields[cur].value }), {}
-)
-export const getFormValues = ({ fields }) => ({
-  ...[
-    ...(fields.entity.value === 1 ? form_1 : form_2),
-    ...form_3
-  ].reduce(
-    (sum, cur) => ({ ...sum, [cur]: fields[cur].value }), {}
-  ),
-  eventId: fields.eventId.options.find(
-    ({ label }) => label === fields.eventId.value
-  )?.id
-})
 
 // проверяем валидна ли форма
 export const getAuthValid = ({ fields }) => authList

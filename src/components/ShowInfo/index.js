@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import styles from './style.module.scss'
 import {
   getResultData,
-} from '../../features/fieldsSlice'
+} from '../../redux/fieldsSlice'
 import { useHistory } from "react-router-dom"
 
 const ShowInfo = () => {
