@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   changeField,
   getStatus,
-} from '../../features/fieldsSlice'
+} from '../../redux/fieldsSlice'
 
 const FieldBlocks = ({ data }) => {
 
@@ -49,12 +49,12 @@ const FieldBlocks = ({ data }) => {
               }
               if (status === 'pending') {
                 fieldData.value = ''
+                fieldData.disabled = true
               }
               return <RenderComponent
                 key={ key }
                 { ...fieldData }
                 onChange={ value => dispatch(changeField({ key, value })) }
-                disabled={ status === 'pending' }
               />
             })
           }

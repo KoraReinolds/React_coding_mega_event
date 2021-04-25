@@ -12,8 +12,6 @@ const InputSelect = ({ onChange, ...props }) => {
     setVisibility(false)
   }
 
-  // const value = 
-
   useEffect(() => {
     window.addEventListener('click', toggleVisibility)
     return () => window.removeEventListener('click', toggleVisibility)
@@ -28,6 +26,8 @@ const InputSelect = ({ onChange, ...props }) => {
         setVisibility(!isOpen)
         e.stopPropagation()
       }}
+      // так как решил для кастомного select испоьзовать input
+      // пришлось сделать его нередактируемым
       readOnly
       end_icon={
         isOpen ? <ArrowIconUp /> : <ArrowIconDown />

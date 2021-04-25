@@ -7,7 +7,7 @@ import {
   makeRequest,
   getAuthValues,
   getAuthValid,
-} from '../../features/fieldsSlice'
+} from '../../redux/fieldsSlice'
 import { useHistory } from "react-router-dom"
 import axios from '../../api'
 
@@ -19,8 +19,6 @@ const Auth = () => {
   const data = useSelector(getAuthData)
   const dataValues = useSelector(getAuthValues)
   const dataValid = useSelector(getAuthValid)
-
-  console.log('dataValid', dataValid)
 
   return <Form
     title="Добро пожаловать"

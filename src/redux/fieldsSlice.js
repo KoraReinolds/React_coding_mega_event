@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+// правила валидации, список функций принимает строку,
+// возвращает true если строка валидна, иначе сообщение об ошибке
 const rules = {
   username: [
     (v) => v.length > 0 || 'Username is required',
@@ -34,12 +36,15 @@ const rules = {
   ],
 }
 
+// блоки, формирующие разметку, список полей для отправки на сервер,
+// результаты и условие валидности формы
 const authList = ['username', 'password']
 const form_1 = ['name', 'dob', 'phone']
 const form_2 = ['cName', 'pos', 'phone']
 const form_3 = ['eventId', 'opt1', 'opt2', 'opt3']
 
 const initialState = {
+  status: '', // статус запросов
   entity: {
     key: 'entity',
     value: 1,
@@ -50,6 +55,8 @@ const initialState = {
     ],
     type: 'radio',
     errorMsg: '',
+    // для установки начального значения смотрим
+    // есть ли поле в списке правил и есть ли хоть одно правило
     error: !!(rules.entity && rules.entity.length),
   },
   cName: {
@@ -162,6 +169,8 @@ const initialState = {
   },
 }
 
+// все запросы делаютс через эту функцию
+// для управления initialState.status 
 export const makeRequest = createAsyncThunk(
   'fields/request',
   async (func) => {
@@ -175,39 +184,41 @@ export const fieldSlice = createSlice({
   initialState,
   reducers: {
 
+    // функция для валидации и установки нового значения
     changeField: (state, { payload: { key, value } }) => {
 
+      // формируем список ошибок
       const errors = rules[key] ?
         rules[key].map(f => f(value)).filter(v => v !== true) : []
-
+      
       state[key].error = !!errors.length
       state[key].errorMsg = errors.length ? errors[errors.length - 1] : ''
       state[key].value = value
 
     },
 
+    // меняет состояние иконки поля с паролем
     changePasswordVisibility: (state) => {
       state.password.show_password = !state.password.show_password
     },
 
+    // устанавливает список мероприятий с сервера
     setEvents: (state, { payload }) => {
       state.eventId.options = payload
     },
 
   },
 
+  // задаем статус запроса в зависимости от его состояния
   extraReducers: (builder) => {
     builder
       .addCase(makeRequest.pending, (state) => {
-        console.log('pending')
         state.status = 'pending'
       })
       .addCase(makeRequest.fulfilled, (state, data) => {
-        console.log('fulfilled', data)
         state.status = 'fulfilled'
       })
       .addCase(makeRequest.rejected, (state, data) => {
-        console.log('rejected', data)
         state.status = 'rejected'
       })
   },
@@ -216,18 +227,10 @@ export const fieldSlice = createSlice({
 
 export const { changeField, changePasswordVisibility, setEvents } = fieldSlice.actions
 
+// формируем список полей для отправки на сервер
 export const getAuthValues = ({ fields }) => authList.reduce(
   (sum, cur) => ({ ...sum, [cur]: fields[cur].value }), {}
 )
-
-export const getAuthValid = ({ fields }) => authList
-  .map(fieldName => fields[fieldName].error)
-  .every(v => v === false)
-
-export const getAuthData = ({ fields }) => [{
-  fields: authList.map(fieldName => fields[fieldName])
-}]
-
 export const getFormValues = ({ fields }) => ({
   ...[
     ...(fields.entity.value === 1 ? form_1 : form_2),
@@ -240,6 +243,10 @@ export const getFormValues = ({ fields }) => ({
   )?.id
 })
 
+// проверяем валидна ли форма
+export const getAuthValid = ({ fields }) => authList
+  .map(fieldName => fields[fieldName].error)
+  .every(v => v === false)
 export const getFormValid = ({ fields }) => [
   ...(fields.entity.value === 1 ? form_1 : form_2),
   ...form_3
@@ -247,6 +254,10 @@ export const getFormValid = ({ fields }) => [
   .map(fieldName => fields[fieldName].error)
   .every(v => v === false)
 
+// фомируем разметку
+export const getAuthData = ({ fields }) => [{
+  fields: authList.map(fieldName => fields[fieldName])
+}]
 export const getFormData = ({ fields }) => [
   {
     title: "Личные данные",
@@ -260,6 +271,7 @@ export const getFormData = ({ fields }) => [
   }
 ]
 
+// формируем результат
 export const getResultData = ({ fields }) => {
 
   const result_template_1 = ['name', 'entity', 'phone', 'dob']
@@ -283,6 +295,7 @@ export const getResultData = ({ fields }) => {
 
 }
 
+// переключатель физ / юр лицо
 export const getEntity = ({ fields }) => fields.entity
 
 export const getStatus = ({ fields }) => fields.status
